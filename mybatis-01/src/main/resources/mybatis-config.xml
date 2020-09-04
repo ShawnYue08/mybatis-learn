@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<!--绝大部分的配置文件，对于xml节点元素的编写顺序是有要求的-->
+<!--比如web.xml，mybatis-config.xml-->
+<configuration>
+    <!--配置-->
+    <properties resource="db.properties">
+        <!--resource从classes根目录下，引入外部配置文件-->
+        <!--用EL表达式获取，${key}-->
+        <!--<property name="" value=""/>-->
+    </properties>
+    <!--别名-->
+    <typeAliases>
+        <!--单独一个类的别名映射-->
+        <!--<typeAlias type="org.westos.model.Account" alias="account"/>-->
+        <!--type是类型，alias是别名-->
+        <!--不足之处在于需要逐一配置-->
+
+        <package name="org.westos.model"/>
+        <!--对一个包下的所有类进行别名映射，别名都是类的名字，且不区分大小写-->
+    </typeAliases>
+    <!--环境-->
+    <environments default="development">
+        <environment id="development">
+            <transactionManager type="JDBC"/>
+            <dataSource type="POOLED">
+                <property name="driver" value="${db.driver}"/>
+                <property name="url" value="${db.url}"/>
+                <property name="username" value="${db.username}"/>
+                <property name="password" value="${db.password}"/>
+            </dataSource>
+        </environment>
+    </environments>
+    <!--mapper文件-->
+    <mappers>
+        <mapper resource="org/westos/mapper/AccountMapper.xml"/>
+        <!--<package name="org.westos.mapper"/>-->
+        <!--包扫描，加载的是接口-->
+    </mappers>
+</configuration>

@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.westos.mapper.AccountMapper">
+    <select id="queryAll" resultType="account">
+        select aid, aname, apassword, a_nickname anickname
+        from account
+    </select>
+
+    <select id="queryOne" resultType="account">
+        select aid, aname, apassword, a_nickname anickname
+        from account
+        where aid = ${value}
+    </select>
+
+    <select id="queryByName" resultType="account">
+        select aid, aname, apassword, a_nickname anickname
+        from account
+        where aname = ${value}
+    </select>
+    
+    <!--模糊查询-->
+    <select id="selectByName1" resultType="account">
+        select aid, aname, apassword, a_nickname anickname
+        from account
+        where aname like #{aname}
+    </select>
+
+    <select id="selectByName2" resultType="account">
+        select aid, aname, apassword, a_nickname anickname
+        from account
+        where aname like '%${value}%'
+    </select>
+
+    <!--useGeneratedKeys：使用插入后的主键值-->
+    <!--keyProperty：将主键值映射到哪一属性上-->
+    <insert id="insert" useGeneratedKeys="true" keyProperty="aid">
+        insert into account(aname, apassword, a_nickname)
+        values
+        (#{aname}, #{apassword}, #{anickname})
+    </insert>
+
+
+    <!--mysql还提供了一个函数last_insert_id(), 它必须紧跟插入语句，而且是插入语句先执行-->
+    <!--通过函数查询主键值，然后设置到属性中-->
+    <!--keyProperty：Java属性，order是指执行顺序在insert之前还是之后-->
+    <insert id="insert1">
+        <selectKey keyProperty="aid" resultType="int" order="AFTER">
+            select last_insert_id()
+        </selectKey>
+        insert into account(aname, apassword, a_nickname)
+        values
+        (#{aname}, #{apassword}, #{anickname})
+    </insert>
+
+    <!--order先执行，uuid函数返回字符串，不能直接设置到aid字段-->
+    <insert id="insert2">
+        <selectKey order="BEFORE" resultType="string" keyProperty="aname">
+            select uuid()
+        </selectKey>
+        insert into account(aname, apassword, a_nickname)
+        values
+        (#{aname}, #{apassword}, #{anickname})
+    </insert>
+
+    <update id="update">
+        update account
+        set aname = #{aname}, apassword = #{apassword}, a_nickname = #{anickname}
+        where aid = #{aid}
+    </update>
+
+    <delete id="delete">
+        delete from account
+        where aid = #{aid}
+    </delete>
+</mapper>
