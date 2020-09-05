@@ -207,13 +207,13 @@ public class ResultSetMetaDemo<T> {
 
 **Mapper代理开发注意事项，必须严格遵循：**
 
-- mapper.xml中的**namespace**必须和**接口的全路径**保持一致【因为mybatis要为接口动态产生代理
-  对象，当执行接口中的方法，**代理对象就会查找对应的mapper文件**，mapper文件与接口如何对应
-  呢？就需要namespace】
-- mapper中的**id**必须和接口中的**方法名**保持一致
-- 因为接口中的方法是可以被重载的，所以mapper中的sql id 对应的**返回值类型，和参数类型需要
-  与接口中保持一致**。**接口中如果返回值是集合，xml中还是结合中的一条数据类型**，（接口中的方法可以重载，但是xml文件不可以重载）
-- 一定要**将mapper接口【注册】**交给mybaits
+- mapper.xml中的namespace必须和接口的全路径保持一致（因为mybatis要为接口动态产生代理
+  对象，当执行接口中的方法，代理对象就会查找对应的mapper文件，mapper文件与接口如何对应
+  呢？就需要namespace）
+- mapper中的id必须和接口中的方法名保持一致
+- 因为接口中的方法是可以被重载的，所以mapper中的sql id 对应的返回值类型，和参数类型需要
+  与接口中保持一致。接口中如果返回值是集合，xml中还是集合中元素的数据类型，（接口中的方法可以重载，但是xml文件中的id不可以重载）
+- 一定要将mapper接口注册交给mybaits
 
 ```xml
 <mappers>
@@ -223,6 +223,25 @@ public class ResultSetMetaDemo<T> {
     <!--当我们需要配置多个mapper时，可以使用包扫描-->
     <package name="org.westos.mapper"/>
 </mappers>
+```
+
+```java
+public interface AccountMapper {
+    List<Account> queryAllAccount();
+}
+```
+
+```xml
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.westos.mapper.AccountMapper">
+    <select id="queryAllAccount" resultType="Account">
+        select aid, aname, apassword, a_nickname as anickname
+        from account
+    </select>
+</mapper?
 ```
 
 更多内容可见博客：[mybatis-02]()
