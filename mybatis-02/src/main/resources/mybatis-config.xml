@@ -19,7 +19,6 @@
         </environment>
     </environments>
     <mappers>
-        <!--当我们使用mapper代理方式后，在配置mappers时，就不能再用mapper.xml-->
         <!--<mapper class="org.westos.mapper.AccountMapper"/>-->
         <!--注意：当配置的mapper属性为resources时，后面是/，当mapper属性为class时，后面是.-->
 

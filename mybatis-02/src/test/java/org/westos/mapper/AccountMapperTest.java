@@ -30,5 +30,5 @@ public class AccountMapperTest {
         System.out.println(JSON.toJSONString(account, true));
     }
 
-    //增删改
+    //增删改 提交事务sqlSession.commit()
 }
