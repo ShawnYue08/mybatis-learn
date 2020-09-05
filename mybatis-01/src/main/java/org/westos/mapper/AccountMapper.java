@@ -35,7 +35,7 @@ public class AccountMapper {
     //模糊查询
     public List<Account> selectByName(String name) {
         try (SqlSession sqlSession = SqlSessionFactoryUtil.getSqlSessionFactory().openSession()) {
-            return sqlSession.selectList("org.westos.mapper.AccountMapper.selectByName2", name);
+            return sqlSession.selectList("org.westos.mapper.AccountMapper.selectByName1", name);
         }
     }
 

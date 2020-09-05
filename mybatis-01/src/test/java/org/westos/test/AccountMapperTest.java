@@ -55,7 +55,8 @@ public class AccountMapperTest {
 
     @Test
     public void selectByName() {
-        List<Account> list = accountMapper.selectByName("a' or 1 = 1 -- ");
+        //List<Account> list = accountMapper.selectByName("a' or 1 = 1 -- ");
+        List<Account> list = accountMapper.selectByName("%zhang%");
         System.out.println(list);
     }
 
