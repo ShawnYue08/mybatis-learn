@@ -16,7 +16,7 @@ public class ResultSetMetaTest {
     public void test() throws ClassNotFoundException, SQLException {
         Class.forName("com.mysql.jdbc.Driver");
         Connection connection = DriverManager.getConnection("jdbc:mysql:///mybatis?useSSL=false", "root", "995995zxvc");
-        PreparedStatement preparedStatement = connection.prepareStatement("select aid, aname, apassword, a_nickname aickname from account");
+        PreparedStatement preparedStatement = connection.prepareStatement("select aid, aname, apassword, a_nickname anickname from account");
         ResultSet resultSet = preparedStatement.executeQuery();
 
         List<Account> list = new ResultSetMetaDemo<Account>().transferToObject(Account.class, resultSet);

@@ -5,7 +5,7 @@
 <configuration>
     <properties resource="db.properties"/>
     <typeAliases>
-        <package name="com"/>
+        <package name="org.westos.model"/>
     </typeAliases>
     <environments default="development">
         <environment id="development">
@@ -19,6 +19,11 @@
         </environment>
     </environments>
     <mappers>
-        
+        <!--当我们使用mapper代理方式后，在配置mappers时，就不能再用mapper.xml-->
+        <!--<mapper class="org.westos.mapper.AccountMapper"/>-->
+        <!--注意：当配置的mapper属性为resources时，后面是/，当mapper属性为class时，后面是.-->
+
+        <!--当我们需要配置多个mapper时，可以使用包扫描-->
+        <package name="org.westos.mapper"/>
     </mappers>
 </configuration>

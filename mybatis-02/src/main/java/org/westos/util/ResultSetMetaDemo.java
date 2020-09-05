@@ -1,7 +1,6 @@
 package org.westos.util;
 
 
-import org.westos.model.Account;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;

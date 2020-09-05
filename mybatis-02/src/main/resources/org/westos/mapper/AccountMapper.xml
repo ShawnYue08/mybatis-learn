@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.westos.mapper.AccountMapper">
+    <select id="queryAllAccount" resultType="Account">
+        select aid, aname, apassword, a_nickname as anickname
+        from account
+    </select>
+
+    <select id="queryByPrimaryId" resultType="Account">
+        select aid, aname, apassword, a_nickname as anickname
+        from account
+        where aid = #{aid}
+    </select>
+
+    <select id="queryAccountByName" resultType="Account">
+        select aid, aname, apassword, a_nickname as anickname
+        from account
+        where aname like #{aname}
+    </select>
+
+    <insert id="insertAccount">
+        insert into
+        account(aname, apassword, a_nickname)
+        values (#{aname}, #{apassword}, #{anickname})
+    </insert>
+
+    <update id="updateAccount" parameterType="java.lang.Integer">
+        update account
+        set aname = #{aname}, apassword = #{apassword}, a_nickname = #{anickname}
+        where aid = #{aid}
+    </update>
+
+    <delete id="deleteAccountById" parameterType="java.lang.Integer">
+        delete from account
+        where aid = #{aid}
+    </delete>
+</mapper>
