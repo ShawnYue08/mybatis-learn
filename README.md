@@ -157,3 +157,72 @@ ${}不会根据数据类型自动增加单引号。
 
 
 更多内容可见博客：[mybatis-01](https://blog.csdn.net/ShawnYue_08/article/details/108402198)
+
+
+
+## mybatis-02
+
+### ResultSet结果集元数据
+
+结果集元数据 + 反射 -> 转换为Java对象。
+
+```java
+public class ResultSetMetaDemo<T> {
+    public List<T> transferToObject(Class<T> clazz, ResultSet resultSet) {
+        List<T> list = null;
+        try {
+            if (resultSet != null) {
+                ResultSetMetaData metaData = resultSet.getMetaData();
+                Method[] declaredMethods = clazz.getDeclaredMethods();
+                while (resultSet.next()) {
+                    T obj = clazz.newInstance();
+                    for (int i = 1; i <= metaData.getColumnCount(); i++) {
+                        Object object = resultSet.getObject(i);
+                        String columnLabel = metaData.getColumnLabel(i);
+                        for (Method declaredMethod : declaredMethods) {
+                            if (declaredMethod.getName().toUpperCase().equals(("set" + columnLabel).toUpperCase())) {
+                                declaredMethod.invoke(obj, object);
+                            }
+                        }
+                    }
+                    if (list == null) {
+                        list = new ArrayList<>();
+                    }
+                    list.add(obj);
+                }
+            } else {
+                return null;
+            }
+        } catch (SQLException | IllegalAccessException | InstantiationException | InvocationTargetException e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+}
+```
+
+### mapper代理开发
+
+使用Mapper接口 + mapper.xml结合，来代替之前的操作。
+
+**Mapper代理开发注意事项，必须严格遵循：**
+
+- mapper.xml中的**namespace**必须和**接口的全路径**保持一致【因为mybatis要为接口动态产生代理
+  对象，当执行接口中的方法，**代理对象就会查找对应的mapper文件**，mapper文件与接口如何对应
+  呢？就需要namespace】
+- mapper中的**id**必须和接口中的**方法名**保持一致
+- 因为接口中的方法是可以被重载的，所以mapper中的sql id 对应的**返回值类型，和参数类型需要
+  与接口中保持一致**。**接口中如果返回值是集合，xml中还是结合中的一条数据类型**，（接口中的方法可以重载，但是xml文件不可以重载）
+- 一定要**将mapper接口【注册】**交给mybaits
+
+```xml
+<mappers>
+    <!--<mapper class="org.westos.mapper.AccountMapper"/>-->
+    <!--注意：当配置的mapper属性为resources时，后面是/，当mapper属性为class时，后面是.-->
+
+    <!--当我们需要配置多个mapper时，可以使用包扫描-->
+    <package name="org.westos.mapper"/>
+</mappers>
+```
+
+更多内容可见博客：[mybatis-02]()
