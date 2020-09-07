@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.westos.mapper.BooksMapper">
+    <!--关联对象查询第一种方式-->
+    <resultMap id="resultMapBook1" type="Books">
+        <id property="bookid" column="bookid"/>
+        <result property="bookname" column="bookname"/>
+        <result property="bookprice" column="bookprice"/>
+        <!--可以设置关联对象-->
+        <result property="account.aid" column="aid"/>
+        <result property="account.aname" column="aname"/>
+        <result property="account.apassword" column="apassword"/>
+        <result property="account.anickname" column="a_nickname"/>
+    </resultMap>
+
+    <!--关联对象查询第二种方式-->
+    <resultMap id="resultMapBook2" type="Books" autoMapping="true">
+        <!--可以设置关联对象-->
+        <result property="account.aid" column="aid"/>
+        <result property="account.aname" column="aname"/>
+        <result property="account.apassword" column="apassword"/>
+        <result property="account.anickname" column="a_nickname"/>
+    </resultMap>
+
+
+    <!--关联对象查询第三种方式-->
+    <resultMap id="resultMapBook3" type="Books" autoMapping="true">
+        <!--可以设置关联对象-->
+        <!--通过association标签关联映射对象-->
+        <!--property:当前Books对象中的属性-->
+        <!--javaType:关联对象的类型-->
+        <!--autoMapping:自动映射-->
+        <association property="account" javaType="Account" autoMapping="true"/>
+    </resultMap>
+
+
+    <!--关联对象查询第四种方式-->
+    <resultMap id="resultMapBook4" type="Books" autoMapping="true">
+        <association property="account" javaType="Account" autoMapping="true">
+            <result property="anickname" column="a_nickname"/>
+        </association>
+    </resultMap>
+
+    <resultMap id="resultMapBook5" type="Books" autoMapping="true">
+        <!--关联对象-->
+        <!--关联对象是单条数据用association-->
+        <!--select就是说，查询的sql Id, ID = namespace + sql ID-->
+        <!--如果查询的select语句不在当前mapper中，必须写namespace + sql Id-->
+        <!--如果查询的select语句在当前mapper中，写sql Id即可-->
+        <!--column是select语句执行的参数值，来源于上一条sql中的列-->
+        <!--fetchType lazy 是懒加载，所谓懒加载，就是用的时候才加载(当不查询account信息时不加载)-->
+        <!--当配置了select语句，javaType无效-->
+        <association property="account"  column="accountid" autoMapping="true"
+                     select="org.westos.mapper.AccountMapper.selectByPrimaryKey" fetchType="lazy"/>
+    </resultMap>
+    
+    <select id="selectByPrimaryKey" resultMap="resultMapBook4">
+        SELECT a.*, b.*
+        FROM account a
+        INNER JOIN books b
+        ON a.`aid` = b.`accountid`
+        WHERE b.`bookid` = #{bookid};
+    </select>
+
+    <!--以下代码支持延迟加载-->
+    <select id="selectByPrimaryKey2" resultMap="resultMapBook5">
+        select * from books where bookid = #{bookid}
+    </select>
+</mapper>

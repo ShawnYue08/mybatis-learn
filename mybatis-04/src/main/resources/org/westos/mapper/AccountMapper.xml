@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.westos.mapper.AccountMapper">
+    <!--Account类除了List的books属性外，其他属性都已经自动映射了，包括a_nickname -> anickname，因为在全局setting中已经配置了-->
+    <resultMap id="resultMapAccount1" type="Account" autoMapping="true">
+        <!--在一对多结果映射中，如果sql是多表连接，需要设置id标签，否则数据无法合并-->
+        <!--用sql查询出来，会有两条记录，但是只有Books所有字段不同，Account字段都是相同的，我们不能把他封装为List<Account>-->
+        <!--而是应该封装为Account{List<Books>} 用id来归并数据-->
+        <id column="aid" property="aid"/>
+        <!--前面是配置关联的对象用association，现在配置关联的集合，用collection-->
+        <!--
+        property:关联的属性
+        ofType:关联对象的类型
+        -->
+        <collection property="books" autoMapping="true" ofType="Books"/>
+    </resultMap>
+
+
+    <resultMap id="resultMapAccount2" type="Account" autoMapping="true">
+        <collection property="books" autoMapping="true" column="{aid=aid,aname=aname}" select="selectBooksById" fetchType="lazy"/>
+    </resultMap>
+
+    <select id="selectById" resultMap="resultMapAccount1">
+        select a.*, b.*
+        from account a
+        left join books b
+        on a.aid = b.accountid
+        where a.aid = #{aid}
+    </select>
+
+
+
+    <!--延迟加载-->
+    <select id="selectByPrimary" resultMap="resultMapAccount2">
+        select *
+        from account
+        where aid = #{aid}
+    </select>
+
+    <select id="selectBooksById" resultType="Books">
+        select *
+        from books
+        where accountid = #{aid} or bookname = #{aname}
+    </select>
+</mapper>
