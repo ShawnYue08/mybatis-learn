@@ -244,4 +244,4 @@ public interface AccountMapper {
 </mapper?
 ```
 
-更多内容可见博客：[mybatis-02]()
+更多内容可见博客：[mybatis-02](https://blog.csdn.net/ShawnYue_08/article/details/108423181)
