@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.westos.mapper.AccountMapper">
+    <!--统一写在上方-->
+    <!--自定义结果类型转换-->
+    <!--orm的m是mapping，类对应表，属性对应列-->
+    <resultMap id="resultMapAccount" type="org.westos.model.Account">
+        <!--主键比较特殊，需要使用id单独配置-->
+        <id property="aid" column="aid"/>
+        <!--属性和表的列的对应关系-->
+        <result property="anickname" column="a_nickname"/>
+        <result property="aname" column="aname"/>
+        <result property="apassword" column="apassword"/>
+    </resultMap>
+
+    <!--autoMapping, 自动映射,规则就是列和属性名要一致-->
+    <!--type,最终结果属于什么类型，封装到哪一个类中-->
+    <resultMap id="resultMapAccount2" type="org.westos.model.Account" autoMapping="true">
+        <id property="aid" column="aid"/>
+        <result property="anickname" column="a_nickname"/>
+    </resultMap>
+
+    <!--环境校验-->
+    <select id="queryAllAccount" resultType="Account" >
+        select aid, aname, apassword, a_nickname anickname
+        from account
+    </select>
+
+
+    <!--输入参数映射-->
+    <select id="select" resultType="Account">
+        select
+               aid, aname, apassword, a_nickname anickname
+        from
+             account
+        limit
+            #{startNo}, #{pageSize}
+    </select>
+
+    <select id="selectByMap" resultType="Account">
+        select
+            aid, aname, apassword, a_nickname anickname
+        from
+            account
+        limit
+            #{startNo}, #{pageSize}
+    </select>
+
+    <select id="selectByQuerySearchVO" resultType="Account" parameterType="org.westos.search.QuerySearchVO">
+        select
+            aid, aname, apassword, a_nickname anickname
+        from
+            account
+        where aname like #{account.aname}
+    </select>
+
+    <insert id="insertAccount">
+        insert into
+        account(aid, aname, apassword, a_nickname)
+        values (#{aid}, #{aname}, #{apassword}, #{anickname})
+    </insert>
+
+    <!--输出参数映射-->
+
+    <select id="query" resultType="map">
+        select
+            aid, aname, apassword, a_nickname
+        from
+            account
+        where aid = #{aid}
+    </select>
+    
+    <select id="query2" resultType="map">
+        select
+            aid, aname, apassword, a_nickname as anickname
+        from
+            account
+        where aid = #{aid}
+    </select>
+    
+    <!--resultMap解决列名和属性无法自动映射-->
+    <!--resultMap是mybatis的一个标签，表示结果集的映射配置-->
+    <select id="selectByPrimaryKey" resultMap="resultMapAccount2">
+        select
+            aid, aname, apassword, a_nickname
+        from
+            account
+        where aid = #{aid}
+    </select>
+
+    <!--mapUnderscoreToCamelCase-->
+    <select id="selectByPrimaryId" resultType="Account">
+        select
+            aid, aname, apassword, a_nickname
+        from
+            account
+        where aid = #{aid}
+    </select>
+</mapper>
