@@ -4,7 +4,6 @@ import net.sf.cglib.proxy.Callback;
 import net.sf.cglib.proxy.Enhancer;
 import net.sf.cglib.proxy.MethodInterceptor;
 import net.sf.cglib.proxy.MethodProxy;
-import net.sf.cglib.reflect.FastClass;
 
 import java.lang.reflect.Method;
 
@@ -14,7 +13,7 @@ import java.lang.reflect.Method;
  */
 public class ProxyCGLibUtil implements Callback {
     private Object obj;
-    //被代理类对象
+    //目标类对象
 
     public ProxyCGLibUtil(Object obj) {
         this.obj = obj;
@@ -27,8 +26,7 @@ public class ProxyCGLibUtil implements Callback {
         enhancer.setCallback(new MethodInterceptor() {
             @Override
             public Object intercept(Object o, Method method, Object[] objects, MethodProxy methodProxy) throws Throwable {
-                //obj表示代理对象，method表示目标类中的方法，args表示方法参数，proxy表示代理方法的MethodProxy对象
-                System.out.println("这里是对目标类进行增强");
+                //o表示代理对象，method表示目标类中的方法，args表示方法参数，proxy表示代理方法的MethodProxy对象
                 return methodProxy.invokeSuper(o, objects);
             }
         });
