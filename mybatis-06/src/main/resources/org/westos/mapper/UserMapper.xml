@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.westos.mapper.UserMapper">
+    <sql id="baseColumn">
+        uid, uname, upassword, u_nickname
+    </sql>
+    
+    <select id="selectByPrimaryKey" resultType="User">
+        select
+            <include refid="baseColumn"/>
+        from
+             user
+        where
+            uid = #{uid}
+    </select>
+
+    <select id="selectAll" resultType="User">
+        select
+            <include refid="baseColumn"/>
+        from
+            user
+        where  1 = 1
+        <if test="uid != null">
+            and uid = #{uid}
+        </if>
+        <if test="uname != null and uname != ''">
+            and uname = #{uname}
+        </if>
+        <if test="upassword != null and upassword != ''">
+            and upassword = #{upassword}
+        </if>
+    </select>
+
+    <!--where标签 标签的特点是满足判断条件，才输出where，可以去除 第一个 and / or-->
+    <select id="selectAll2" resultType="User">
+        select
+            <include refid="baseColumn"/>
+        from
+            user
+        <where>
+            <if test="uid != null">
+                and uid = #{uid}
+            </if>
+            <if test="uname != null and uname != ''">
+                and uname = #{uname}
+            </if>
+            <if test="upassword != null and upassword != ''">
+                and upassword = #{upassword}
+            </if>
+        </where>
+    </select>
+
+    <!--set标签-->
+    <update id="updateUser">
+        update
+            user
+        <set>
+            <if test="uname != null and uname != ''">
+                uname = #{uname},
+            </if>
+            <if test="upassword != null and upassword != ''">
+                upassword = #{upassword},
+            </if>
+            <if test="unickname != null and unickname != ''">
+                u_nickname = #{unickname},
+            </if>
+        </set>
+        where uid = #{uid}
+    </update>
+</mapper>
