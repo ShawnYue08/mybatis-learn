@@ -259,3 +259,19 @@ public interface AccountMapper {
 关联集合collection
 
 更多内容可见博客：[mybatis-04](https://blog.csdn.net/ShawnYue_08/article/details/108455244)
+
+## mybatis-05
+
+一对一的关联关系
+多对多的关联关系
+设置全局延迟加载开关
+指定MyBatis的日志实现
+
+更多内容可见博客：[mybatis-05](https://blog.csdn.net/ShawnYue_08/article/details/108487295)
+
+## mybatis-06
+
+动态SQL
+
+sql标签、if标签、where标签、set标签...未完待续。
+20200910更新。
