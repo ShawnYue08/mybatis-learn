@@ -245,3 +245,17 @@ public interface AccountMapper {
 ```
 
 更多内容可见博客：[mybatis-02](https://blog.csdn.net/ShawnYue_08/article/details/108423181)
+
+## mybatis-03
+
+输入输出参数映射、@Param、resultMap
+
+更多内容可见博客：[mybatis-03](https://blog.csdn.net/ShawnYue_08/article/details/108446464)
+
+## mybatis-04
+
+一对多的关联关系、延迟加载
+关联对象association
+关联集合collection
+
+更多内容可见博客：[mybatis-04](https://blog.csdn.net/ShawnYue_08/article/details/108455244)
