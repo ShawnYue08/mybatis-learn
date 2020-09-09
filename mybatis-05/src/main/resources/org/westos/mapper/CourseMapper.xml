@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.westos.mapper.CourseMapper">
+    <resultMap id="resultMapCourse" type="Course">
+        <id property="cid" column="cid"/>
+        <result property="cname" column="cname"/>
+        <collection property="students" column="cid"
+                    select="selectStudentByCid"/>
+    </resultMap>
+
+    <select id="selectStudentByCid" resultType="Student">
+        SELECT s.*
+        FROM student s
+                 INNER JOIN stu_cour st
+                            ON s.`sid` = st.`ssid`
+        WHERE st.`ccid` = #{cid};
+    </select>
+
+    <select id="selectByCid" resultMap="resultMapCourse">
+        select * from course where cid = #{cid}
+    </select>
+
+    <resultMap id="resultMapCourse2" type="Course">
+        <id property="cid" column="cid"/>
+        <result property="cname" column="cname"/>
+        <collection property="students" column="cid"
+                    select="selectStudentByCid"/>
+    </resultMap>
+
+    <select id="selectAll" resultMap="resultMapCourse2">
+        select * from course
+    </select>
+</mapper>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.westos.mapper.GirlMapper">
+    <resultMap id="resultMapGirl" type="Girl" autoMapping="true">
+        <association property="boy" autoMapping="true" javaType="Boy"/>
+    </resultMap>
+
+    <resultMap id="resultMapGirl2" type="Girl" autoMapping="true">
+        <id property="gid" column="gid"/>
+        <result property="bbid" column="bbid"/>
+        <association property="boy" column="bbid"
+                     select="selectBoyById"
+                     fetchType="lazy"/>
+    </resultMap>
+
+    <select id="selectBoyById" resultType="Boy">
+        select * from boy where bid = #{bid}
+    </select>
+
+    <select id="selectByGid" resultMap="resultMapGirl">
+        SELECT g.*, b.*
+        FROM girl g
+        INNER JOIN boy b
+        ON g.`bbid` = b.`bid`
+        WHERE g.`gid` = #{gid}
+    </select>
+
+    <select id="selectByPrimaryGid" resultMap="resultMapGirl2">
+        select * from girl where gid = #{gid}
+    </select>
+</mapper>
