@@ -20,9 +20,10 @@ public class UserMapperTest {
     public void test() {
         try (SqlSession sqlSession = SqlSessionFactoryUtil.getSqlSessionFactory().openSession()) {
             UserMapper mapper = sqlSession.getMapper(UserMapper.class);
-            ArrayList<Integer> arrayList = new ArrayList<>(Arrays.asList(1, 2, 3, 4));
-            List<User> users = mapper.select(arrayList);
-            System.out.println(JSON.toJSONString(users, true));
+            User user = new User();
+            user.setUid(1);
+            User user1 = mapper.select2(user);
+            System.out.println(JSON.toJSONString(user1, true));
         } catch (IOException e) {
             e.printStackTrace();
         }

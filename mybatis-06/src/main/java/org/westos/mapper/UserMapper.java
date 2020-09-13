@@ -36,4 +36,7 @@ public interface UserMapper {
 
     //使用foreach标签
     List<User> select(List<Integer> list);
+
+    //使用choose...when...otherwise标签
+    User select2(User user);
 }
