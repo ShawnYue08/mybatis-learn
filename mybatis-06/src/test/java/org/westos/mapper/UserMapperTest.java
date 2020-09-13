@@ -7,6 +7,8 @@ import org.westos.model.User;
 import org.westos.util.SqlSessionFactoryUtil;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -18,12 +20,9 @@ public class UserMapperTest {
     public void test() {
         try (SqlSession sqlSession = SqlSessionFactoryUtil.getSqlSessionFactory().openSession()) {
             UserMapper mapper = sqlSession.getMapper(UserMapper.class);
-            User user = new User();
-            user.setUid(3);
-            user.setUname("黄忠");
-            user.setUnickname("汉升");
-            mapper.updateUser(user);
-            System.out.println(JSON.toJSONString(mapper.selectByPrimaryKey(3), true));
+            ArrayList<Integer> arrayList = new ArrayList<>(Arrays.asList(1, 2, 3, 4));
+            List<User> users = mapper.select(arrayList);
+            System.out.println(JSON.toJSONString(users, true));
         } catch (IOException e) {
             e.printStackTrace();
         }

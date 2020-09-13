@@ -69,4 +69,79 @@
         </set>
         where uid = #{uid}
     </update>
+
+    <!--trim标签的属性，prefix增加一个前缀，prefixOverrides去除一个前缀-->
+    <!--suffix增加一个后缀，suffixOverrides去除一个后缀-->
+    <!--主要是在插入、更新时使用-->
+    <select id="selectAll3" resultType="User">
+        select
+            <include refid="baseColumn"/>
+        from
+            user
+        <trim prefix="where" prefixOverrides="and |or ">
+            <if test="uid != null">
+                and uid = #{uid}
+            </if>
+            <if test="uname != null and uname.trim != ''">
+                and uname = #{uname}
+            </if>
+        </trim>
+    </select>
+
+    <!--prefix增加一个前缀，suffixOverrides去除一个后缀-->
+    <update id="updateUser2">
+        update
+            user
+        <trim prefix="set" suffixOverrides=",">
+            <if test="uname != null and uname.trim != ''">
+                uname = #{uname},
+            </if>
+            <if test="upassword != null and upassword.trim != ''">
+                upassword = #{upassword},
+            </if>
+            <if test="unickname != null and unickname.trim != ''">
+                u_nickname = #{unickname},
+            </if>
+        </trim>
+        where uid = #{uid}
+    </update>
+
+    <insert id="insertUser">
+        insert into user
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="uname != null">
+                uname,
+            </if>
+            <if test="upassword != null">
+                upassword,
+            </if>
+            <if test="unickname != null">
+                u_nickname,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="uname != null">
+                #{uname},
+            </if>
+            <if test="upassword != null">
+                #{upassword},
+            </if>
+            <if test="unickname != null">
+                #{unickname},
+            </if>
+        </trim>
+    </insert>
+
+    <select id="select" resultType="User">
+        select
+            <include refid="baseColumn"/>
+        from
+             user
+        <trim prefix="where">
+            uid in 
+            <foreach collection="list" open="(" close=")" separator="," index="index" item="item">
+                #{item}
+            </foreach>
+        </trim>
+    </select>
 </mapper>
