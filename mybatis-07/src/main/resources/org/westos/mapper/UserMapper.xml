@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.westos.mapper.UserMapper">
+    <resultMap id="BaseResultMap" type="org.westos.model.User">
+        <id column="uid" jdbcType="INTEGER" property="uid"/>
+        <result column="uname" jdbcType="VARCHAR" property="uname"/>
+        <result column="upassword" jdbcType="VARCHAR" property="upassword"/>
+        <result column="u_nickname" jdbcType="VARCHAR" property="uNickname"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        uid, uname, upassword, u_nickname
+    </sql>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from user
+        where `uid` = #{uid,jdbcType=INTEGER}
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete
+        from user
+        where `uid` = #{uid,jdbcType=INTEGER}
+    </delete>
+
+    <insert id="insert" keyColumn="uid" keyProperty="uid" parameterType="org.westos.model.User" useGeneratedKeys="true">
+        insert into user (uname, upassword, u_nickname)
+        values (#{uname,jdbcType=VARCHAR}, #{upassword,jdbcType=VARCHAR}, #{uNickname,jdbcType=VARCHAR})
+    </insert>
+
+    <insert id="insertSelective" keyColumn="uid" keyProperty="uid" parameterType="org.westos.model.User"
+            useGeneratedKeys="true">
+        insert into user
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="uname != null">
+                uname,
+            </if>
+            <if test="upassword != null">
+                upassword,
+            </if>
+            <if test="uNickname != null">
+                u_nickname,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="uname != null">
+                #{uname,jdbcType=VARCHAR},
+            </if>
+            <if test="upassword != null">
+                #{upassword,jdbcType=VARCHAR},
+            </if>
+            <if test="uNickname != null">
+                #{uNickname,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateByPrimaryKeySelective" parameterType="org.westos.model.User">
+        update user
+        <set>
+            <if test="uname != null">
+                uname = #{uname,jdbcType=VARCHAR},
+            </if>
+            <if test="upassword != null">
+                upassword = #{upassword,jdbcType=VARCHAR},
+            </if>
+            <if test="uNickname != null">
+                u_nickname = #{uNickname,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where `uid` = #{uid,jdbcType=INTEGER}
+    </update>
+
+    <update id="updateByPrimaryKey" parameterType="org.westos.model.User">
+        update user
+        set uname      = #{uname,jdbcType=VARCHAR},
+            upassword  = #{upassword,jdbcType=VARCHAR},
+            u_nickname = #{uNickname,jdbcType=VARCHAR}
+        where `uid` = #{uid,jdbcType=INTEGER}
+    </update>
+</mapper>

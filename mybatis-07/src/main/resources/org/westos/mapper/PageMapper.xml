@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.westos.mapper.PageMapper">
+    <resultMap id="BaseResultMap" type="org.westos.model.Page">
+        <id column="pid" jdbcType="INTEGER" property="pid"/>
+        <result column="pname" jdbcType="VARCHAR" property="pname"/>
+        <result column="pcount" jdbcType="INTEGER" property="pcount"/>
+        <result column="pprice" jdbcType="FLOAT" property="pprice"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        pid, pname, pcount, pprice
+    </sql>
+
+    <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from page
+        where pid = #{pid,jdbcType=INTEGER}
+    </select>
+
+    <select id="select" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from page
+        <where>
+            <if test="pid != null">
+                and pid = #{pid}
+            </if>
+            <if test="pname != null">
+                and pname like concat('%', #{pname}, '%')
+            </if>
+            <if test="pcount != null">
+                and pcount = #{pcount}
+            </if>
+            <if test="pprice != null">
+                and pprice = #{pprice}
+            </if>
+        </where>
+    </select>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+        delete
+        from page
+        where pid = #{pid,jdbcType=INTEGER}
+    </delete>
+
+    <insert id="insert" keyColumn="pid" keyProperty="pid" parameterType="org.westos.model.Page" useGeneratedKeys="true">
+        insert into page (pname, pcount, pprice)
+        values (#{pname,jdbcType=VARCHAR}, #{pcount,jdbcType=INTEGER}, #{pprice,jdbcType=FLOAT})
+    </insert>
+
+    <insert id="insertSelective" keyColumn="pid" keyProperty="pid" parameterType="org.westos.model.Page"
+            useGeneratedKeys="true">
+        insert into page
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="pname != null">
+                pname,
+            </if>
+            <if test="pcount != null">
+                pcount,
+            </if>
+            <if test="pprice != null">
+                pprice,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="pname != null">
+                #{pname,jdbcType=VARCHAR},
+            </if>
+            <if test="pcount != null">
+                #{pcount,jdbcType=INTEGER},
+            </if>
+            <if test="pprice != null">
+                #{pprice,jdbcType=FLOAT},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateByPrimaryKeySelective" parameterType="org.westos.model.Page">
+        update page
+        <set>
+            <if test="pname != null">
+                pname = #{pname,jdbcType=VARCHAR},
+            </if>
+            <if test="pcount != null">
+                pcount = #{pcount,jdbcType=INTEGER},
+            </if>
+            <if test="pprice != null">
+                pprice = #{pprice,jdbcType=FLOAT},
+            </if>
+        </set>
+        where pid = #{pid,jdbcType=INTEGER}
+    </update>
+
+    <update id="updateByPrimaryKey" parameterType="org.westos.model.Page">
+        update page
+        set pname  = #{pname,jdbcType=VARCHAR},
+            pcount = #{pcount,jdbcType=INTEGER},
+            pprice = #{pprice,jdbcType=FLOAT}
+        where pid = #{pid,jdbcType=INTEGER}
+    </update>
+</mapper>
